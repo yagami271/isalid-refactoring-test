@@ -5,6 +5,9 @@ class Destination
     public $id;
     public $countryName;
     public $conjunction;
+    /**
+     * @deprecated if not used in the project then deleted.
+     */
     public $name;
     public $computerName;
 

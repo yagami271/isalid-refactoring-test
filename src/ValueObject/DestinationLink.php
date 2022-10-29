@@ -11,7 +11,7 @@ final class DestinationLink
 
     public static function createUrlFromEntities(Site $site, Destination $destination, Quote $quote): self
     {
-        return new self($site->url . '/' . $destination->countryName . '/quote/' . $quote->id);
+        return new self(urlencode($site->url . '/' . $destination->countryName . '/quote/' . $quote->id));
     }
 
     public function getUrl(): string

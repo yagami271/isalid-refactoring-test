@@ -2,72 +2,66 @@
 
 class TemplateManager
 {
-    public function getTemplateComputed(Template $tpl, array $data)
+    public function getTemplateComputed(Template $template, array $data): Template
     {
-        if (!$tpl) {
-            throw new \RuntimeException('no tpl given');
-        }
+        $cloneTemplate = clone $template;
+        $cloneTemplate->subject = $this->replacePlaceholders($cloneTemplate->subject, $data);
+        $cloneTemplate->content = $this->replacePlaceholders($cloneTemplate->content, $data);
 
-        $replaced = clone($tpl);
-        $replaced->subject = $this->computeText($replaced->subject, $data);
-        $replaced->content = $this->computeText($replaced->content, $data);
-
-        return $replaced;
+        return $cloneTemplate;
     }
 
-    private function computeText($text, array $data)
+    /**
+     * @param array<string, mixed> $data Can contain Quote Or/And User.
+     */
+    private function replacePlaceholders(string $text, array $data): string
     {
-        $APPLICATION_CONTEXT = ApplicationContext::getInstance();
+        $placeholdersData = [];
 
-        $quote = (isset($data['quote']) and $data['quote'] instanceof Quote) ? $data['quote'] : null;
+        $placeholdersData += $this->getQuotePlaceholdersData($data);
+        $placeholdersData += $this->getUserPlaceholdersData($data);
 
-        if ($quote)
-        {
-            $_quoteFromRepository = QuoteRepository::getInstance()->getById($quote->id);
-            $usefulObject = SiteRepository::getInstance()->getById($quote->siteId);
-            $destinationOfQuote = DestinationRepository::getInstance()->getById($quote->destinationId);
+        return \strtr($text, $placeholdersData);
+    }
 
-            if(strpos($text, '[quote:destination_link]') !== false){
-                $destination = DestinationRepository::getInstance()->getById($quote->destinationId);
-            }
-
-            $containsSummaryHtml = strpos($text, '[quote:summary_html]');
-            $containsSummary     = strpos($text, '[quote:summary]');
-
-            if ($containsSummaryHtml !== false || $containsSummary !== false) {
-                if ($containsSummaryHtml !== false) {
-                    $text = str_replace(
-                        '[quote:summary_html]',
-                        Quote::renderHtml($_quoteFromRepository),
-                        $text
-                    );
-                }
-                if ($containsSummary !== false) {
-                    $text = str_replace(
-                        '[quote:summary]',
-                        Quote::renderText($_quoteFromRepository),
-                        $text
-                    );
-                }
-            }
-
-            (strpos($text, '[quote:destination_name]') !== false) and $text = str_replace('[quote:destination_name]',$destinationOfQuote->countryName,$text);
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function getQuotePlaceholdersData(array $data): array
+    {
+        $quote = $data['quote'] ?? null;
+        if (($quote instanceof Quote) === false) {
+            // I think we could remove this rule after a thorough analysis of the data.
+            return ['[quote:destination_link]' => ''];
         }
 
-        if (isset($destination))
-            $text = str_replace('[quote:destination_link]', $usefulObject->url . '/' . $destination->countryName . '/quote/' . $_quoteFromRepository->id, $text);
-        else
-            $text = str_replace('[quote:destination_link]', '', $text);
+        $site = SiteRepository::getInstance()->getById($quote->siteId);
+        $destination = DestinationRepository::getInstance()->getById($quote->destinationId);
 
-        /*
-         * USER
-         * [user:*]
-         */
-        $_user  = (isset($data['user'])  and ($data['user']  instanceof User))  ? $data['user']  : $APPLICATION_CONTEXT->getCurrentUser();
-        if($_user) {
-            (strpos($text, '[user:first_name]') !== false) and $text = str_replace('[user:first_name]'       , ucfirst(mb_strtolower($_user->firstname)), $text);
+        return [
+            '[quote:destination_link]' => DestinationLink::createUrlFromEntities($site, $destination, $quote)->getUrl(),
+            '[quote:summary_html]' => $quote->getIdAsHtml(),
+            '[quote:summary]' => $quote->getIdAsString(),
+            '[quote:destination_name]' => $destination->countryName,
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function getUserPlaceholdersData(array $data): array
+    {
+        $applicationContext = ApplicationContext::getInstance();
+        $user = $data['user'] ?? $applicationContext->getCurrentUser();
+
+        if (($user instanceof User) === false) {
+            return [];
         }
 
-        return $text;
+        return [
+            '[user:first_name]' => $user->firstname
+        ];
     }
 }
