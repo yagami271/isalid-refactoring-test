@@ -2,16 +2,17 @@
 
 class Destination
 {
-    public $id;
-    public $countryName;
-    public $conjunction;
+    public int $id;
+    public string $countryName;
+    public string $conjunction;
     /**
      * @deprecated if not used in the project then deleted.
      */
-    public $name;
-    public $computerName;
+    public string $name;
+    public string $computerName;
 
-    public function __construct($id, $countryName, $conjunction, $computerName)
+
+    public function __construct(int $id, string $countryName, string $conjunction, string $computerName)
     {
         $this->id = $id;
         $this->countryName = $countryName;

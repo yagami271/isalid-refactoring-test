@@ -13,6 +13,8 @@ require_once __DIR__ . '/../src/Repository/Repository.php';
 require_once __DIR__ . '/../src/Repository/DestinationRepository.php';
 require_once __DIR__ . '/../src/Repository/QuoteRepository.php';
 require_once __DIR__ . '/../src/Repository/SiteRepository.php';
+require_once __DIR__ . '/../src/Repository/UserRepository.php';
+require_once __DIR__ . '/../src/ValueObject/DestinationLink.php';
 require_once __DIR__ . '/../src/TemplateManager.php';
 
 $faker = \Faker\Factory::create();
@@ -34,7 +36,7 @@ $templateManager = new TemplateManager();
 $message = $templateManager->getTemplateComputed(
     $template,
     [
-        'quote' => new Quote($faker->randomNumber(), $faker->randomNumber(), $faker->randomNumber(), $faker->date())
+        'quote' => new Quote($faker->randomNumber(), $faker->randomNumber(), $faker->randomNumber(), $faker->dateTime())
     ]
 );
 

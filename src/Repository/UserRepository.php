@@ -1,17 +1,13 @@
 <?php
 
-use Faker\Factory;
-
 class UserRepository implements Repository
 {
     use SingletonTrait;
 
     /**
      * @param int $id
-     *
-     * @return User
      */
-    public function getById($id)
+    public function getById($id): User
     {
         $generator = Faker\Factory::create();
         $generator->seed($id);

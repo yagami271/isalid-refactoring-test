@@ -2,17 +2,17 @@
 
 class Quote
 {
-    public $id;
-    public $siteId;
-    public $destinationId;
-    public $dateQuoted;
+    public int $id;
+    public int $siteId;
+    public int $destinationId;
+    public \DateTime $dateTime;
 
-    public function __construct($id, $siteId, $destinationId, $dateQuoted)
+    public function __construct(int $id, int $siteId, int $destinationId, \DateTime $dateTime)
     {
         $this->id = $id;
         $this->siteId = $siteId;
         $this->destinationId = $destinationId;
-        $this->dateQuoted = $dateQuoted;
+        $this->dateTime = $dateTime;
     }
 
     /**

@@ -2,18 +2,12 @@
 
 trait SingletonTrait
 {
-    /**
-     * @var $this
-     */
-    protected static $instance = null;
+    protected static ?self $instance = null;
 
-    /**
-     * @return $this
-     */
-    public static function getInstance()
+    public static function getInstance(): self
     {
-        if (!self::$instance) {
-            self::$instance = new static();
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
 
         return self::$instance;

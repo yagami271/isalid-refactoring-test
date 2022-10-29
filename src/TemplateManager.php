@@ -2,6 +2,9 @@
 
 class TemplateManager
 {
+    /**
+     * @param array<string, Quote|User> $data
+     */
     public function getTemplateComputed(Template $template, array $data): Template
     {
         $cloneTemplate = clone $template;
@@ -12,7 +15,7 @@ class TemplateManager
     }
 
     /**
-     * @param array<string, mixed> $data Can contain Quote Or/And User.
+     * @param array<string, Quote|User> $data Can contain Quote Or/And User.
      */
     private function replacePlaceholders(string $text, array $data): string
     {
@@ -25,8 +28,8 @@ class TemplateManager
     }
 
     /**
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
+     * @param array<string, Quote|User> $data
+     * @return array<string, string>
      */
     private function getQuotePlaceholdersData(array $data): array
     {
@@ -48,8 +51,8 @@ class TemplateManager
     }
 
     /**
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
+     * @param array<string, Quote|User> $data
+     * @return array<string, string>
      */
     private function getUserPlaceholdersData(array $data): array
     {

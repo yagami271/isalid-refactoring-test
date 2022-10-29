@@ -1,12 +1,8 @@
 <?php
 
-use Faker\Factory;
-
 class SiteRepository implements Repository
 {
     use SingletonTrait;
-
-    private $url;
 
     /**
      * @param int $id
