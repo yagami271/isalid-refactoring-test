@@ -33,7 +33,11 @@
 
 * See with team to delete rule ['[quote:destination_link]' => '']`
 * Try to not use $data array in `TemplateManager::getTemplateComputed()` and use object directly.
-* We can move `getQuotePlaceholdersData` and `getUserPlaceholdersData` in 2 diffirent classes, like, `QuotePlaceHoldersDataService` and `UserPlaceHoldersDataService` and put each functional rules related (Single Responsibility). 
+* We can move `getQuotePlaceholdersData` and `getUserPlaceholdersData` in 2 different classes, like, `QuotePlaceHoldersDataService` and `UserPlaceHoldersDataService` and put each functional rules related (Single Responsibility). 
   But for now let's stay pragmatic and keep it simple, stupid. **If another developer wants to add a new key or modify one, he just has to update an array and that's it**. 
+ 
 
-  
+## Other solution to be discussed
+Check branche : https://github.com/yagami271/isalid-refactoring-test/tree/feature/strategy-pattern <br> 
+* The idea is to separate the responsibilities of each entity placeholders data. If for example we want to add a new placeholder for the product, all we have to do is to create a new class `ProductPlaceholdersDataStrategy` and implements `PlaceholdersDataStrategyInterface` without forgetting to inject the new strategy in the `TemplateManager` class
+* With symfony's dependency injection ! we can easily inject automatically all services that implements `PlaceholdersDataStrategyInterface` into `TemplateManager`, so for new placeholders feature we just need to create a new class that implement `PlaceholdersDataStrategyInterface`
