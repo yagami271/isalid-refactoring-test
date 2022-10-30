@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\ValueObject;
+
+use App\Entity\Destination;
+use App\Entity\Quote;
+use App\Entity\Site;
+
 final class DestinationLink
 {
     private string $url;

@@ -1,23 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Test;
+
+use App\Context\ApplicationContext;
+use App\Entity\Quote;
+use App\Entity\Template;
+use App\Repository\DestinationRepository;
+use App\Repository\SiteRepository;
+use App\Repository\UserRepository;
+use App\TemplateManager;
+use App\ValueObject\DestinationLink;
 use Faker\Factory;
+use PHPUnit\Framework\TestCase;
 
-require_once __DIR__ . '/../src/Entity/Destination.php';
-require_once __DIR__ . '/../src/Entity/Quote.php';
-require_once __DIR__ . '/../src/Entity/Site.php';
-require_once __DIR__ . '/../src/Entity/Template.php';
-require_once __DIR__ . '/../src/Entity/User.php';
-require_once __DIR__ . '/../src/Helper/SingletonTrait.php';
-require_once __DIR__ . '/../src/ValueObject/DestinationLink.php';
-require_once __DIR__ . '/../src/Context/ApplicationContext.php';
-require_once __DIR__ . '/../src/Repository/Repository.php';
-require_once __DIR__ . '/../src/Repository/DestinationRepository.php';
-require_once __DIR__ . '/../src/Repository/QuoteRepository.php';
-require_once __DIR__ . '/../src/Repository/SiteRepository.php';
-require_once __DIR__ . '/../src/Repository/UserRepository.php';
-require_once __DIR__ . '/../src/TemplateManager.php';
-
-class TemplateManagerTest extends PHPUnit_Framework_TestCase
+class TemplateManagerTest extends TestCase
 {
     public function testNominalCase(): void
     {

@@ -1,5 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App;
+
+use App\Context\ApplicationContext;
+use App\Entity\Quote;
+use App\Entity\Template;
+use App\Entity\User;
+use App\Repository\DestinationRepository;
+use App\Repository\SiteRepository;
+use App\ValueObject\DestinationLink;
+
 class TemplateManager
 {
     /**

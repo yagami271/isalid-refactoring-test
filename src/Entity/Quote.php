@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Entity;
+
 class Quote
 {
     public int $id;
