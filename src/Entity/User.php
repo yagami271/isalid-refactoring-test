@@ -18,4 +18,9 @@ class User
         $this->lastname = $lastname;
         $this->email = $email;
     }
+
+    public function getFirstname(): string
+    {
+        return \ucfirst(\mb_strtolower($this->firstname));
+    }
 }

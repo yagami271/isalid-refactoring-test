@@ -73,7 +73,7 @@ class TemplateManager
         }
 
         return [
-            '[user:first_name]' => $user->firstname
+            '[user:first_name]' => $user->getFirstname()
         ];
     }
 
