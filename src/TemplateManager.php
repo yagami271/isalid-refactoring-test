@@ -19,23 +19,20 @@ class TemplateManager
      */
     public function getTemplateComputed(Template $template, array $data): Template
     {
+        $placeholdersData = $this->getPlaceholdersData($data);
+
         $cloneTemplate = clone $template;
-        $cloneTemplate->subject = $this->replacePlaceholders($cloneTemplate->subject, $data);
-        $cloneTemplate->content = $this->replacePlaceholders($cloneTemplate->content, $data);
+        $cloneTemplate->subject = $this->replacePlaceholders($cloneTemplate->subject, $placeholdersData);
+        $cloneTemplate->content = $this->replacePlaceholders($cloneTemplate->content, $placeholdersData);
 
         return $cloneTemplate;
     }
 
     /**
-     * @param array<string, Quote|User> $data Can contain Quote Or/And User.
+     * @param array<string, string> $placeholdersData
      */
-    private function replacePlaceholders(string $text, array $data): string
+    private function replacePlaceholders(string $text, array $placeholdersData): string
     {
-        $placeholdersData = [];
-
-        $placeholdersData += $this->getQuotePlaceholdersData($data);
-        $placeholdersData += $this->getUserPlaceholdersData($data);
-
         return \strtr($text, $placeholdersData);
     }
 
@@ -78,5 +75,19 @@ class TemplateManager
         return [
             '[user:first_name]' => $user->firstname
         ];
+    }
+
+    /**
+     * @param array<string, Quote|User> $data
+     * @return array<string, string>
+     */
+    private function getPlaceholdersData(array $data): array
+    {
+        $placeholdersData = [];
+
+        $placeholdersData += $this->getQuotePlaceholdersData($data);
+        $placeholdersData += $this->getUserPlaceholdersData($data);
+
+        return $placeholdersData;
     }
 }
