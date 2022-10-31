@@ -7,19 +7,21 @@
   * [quote:destination_link]
   * [user:first_name]
 * On variable $data we can got **quote** or **user**
-* :warning: Bug detected on url site link generated on template, a url must not contain spaces
+* :warning: Bug detected on url site link generated on template. The url shouldn't contain spaces
 * Before start refactoring 
-  * We have to add a lot of tests before refactoring to avoid regression
+  * Add several tests before refactoring to avoid regression
   * I use blackbox testing and whitbox testing to create my tests
 * Analyse **TemplateManager**
-  * The first thing we see is the naming of variables like $tpl instead of template, $_user, $usefulObject... etc 
-  * There is a real performance problem, because we make several calls to the repository to get data. In real life we request a DB server
-  * We do no respect DRY principle, as we see for example, We get the quote from the repository knowing that we already have it in parameter
-  * An **if else** without **{}** is really dangerous, because another developer by accident add just one line and it could break everything
+  * It is not recommended to use naming variables like $tpl, $_user, $usefulObject... etc. Instead, consider meaningful names such as: $template, $user... etc
+  * There is a real performance issue. Because we make several calls to get data from the repository. However, conconcretely, we request a DB server
+  * We do no respect DRY principle. For example: we get the quote from the repository knowing that we already have it in parameter
+  * An **if else** without **{}** is really dangerous. The developer may accidentally add just one additional line and it could break everything
 * After refactoring TemplateManager
   * analyse for rule `['[quote:destination_link]' => '']` in `getQuotePlaceholdersData` method to delete it
     * We can check the template used when calling the `getTemplateComputed` with the user only
-* I know that we can not change the signature of `getTemplateComputed` but passing an array of Quote Or/And User it's really bad practice, i think it's more better if we pass Object directly.
+* We can not change the signature of `getTemplateComputed`. However, passing an array of Quote Or/And User it's a really bad practice. it's safer if we pass the Object directly.
+
+
 * ### :next_track_button: **To be done** :next_track_button:
   *  We can add two attributes $site(Site) and $destination(Destination) on Quote entity to avoid 2 sql call in `TemplateManager::getQuotePlaceholdersData()` <br> 
   ```php
