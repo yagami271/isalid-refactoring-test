@@ -19,9 +19,10 @@ class TemplateManager
      */
     public function getTemplateComputed(Template $template, array $data): Template
     {
+        $cloneTemplate = clone $template;
+
         $placeholdersData = $this->getPlaceholdersData($data);
 
-        $cloneTemplate = clone $template;
         $cloneTemplate->subject = $this->replacePlaceholders($cloneTemplate->subject, $placeholdersData);
         $cloneTemplate->content = $this->replacePlaceholders($cloneTemplate->content, $placeholdersData);
 
@@ -73,7 +74,7 @@ class TemplateManager
         }
 
         return [
-            '[user:first_name]' => $user->getFirstname()
+            '[user:first_name]' => $user->firstname
         ];
     }
 
